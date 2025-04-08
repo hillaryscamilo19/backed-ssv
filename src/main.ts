@@ -12,9 +12,9 @@ async function bootstrap() {
       transform: true,
     }),
   )
-
-  await app.listen(3000)
-  console.log(`Aplicación ejecutándose en: http://localhost:3000`)
+  app.setGlobalPrefix('api');
+  await app.listen(3001)
+  console.log(`Aplicación ejecutándose en: http://localhost:3001`)
 }
 bootstrap()
 
