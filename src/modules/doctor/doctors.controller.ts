@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Query } from "@nestjs/common"
-import type { DoctorsService } from "./doctors.service"
-import type { Doctor } from "./entities/doctor.entity"
+import  { DoctorsService } from "./doctors.service"
+import  { Doctor } from "./entities/doctor.entity"
 
-@Controller("api/doctors")
+@Controller("")
 export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
 

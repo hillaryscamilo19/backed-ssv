@@ -1,6 +1,8 @@
 // In your app.module.ts or database configuration file
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DoctorsModule } from './modules/doctor/doctors.module';
+
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       logging: true, 
       entities: ['dist/**/*.entity{.ts,.js}'], 
     }),
+    DoctorsModule
 
   ],
 })

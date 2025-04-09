@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import type { Repository } from "typeorm"
+import  { Repository } from "typeorm"
 import { Appointment } from "./entities/appointment.entity"
 import { DoctorsService } from "src/modules/doctor/doctors.service"
 import { CreateAppointmentDto } from "src/modules/doctor/dto/create-appointment.dto"

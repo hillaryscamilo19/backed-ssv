@@ -3,8 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm"
 import { DoctorsService } from "./doctors.service"
 import { Appointment } from "src/appointments/entities/appointment.entity"
 import { Doctor } from "./entities/doctor.entity"
-import { DoctorsController } from "./doctores.controller"
 import { Patient } from "./entities/paciente.entity"
+import { DoctorsController } from "./doctors.controller"
 
 
 

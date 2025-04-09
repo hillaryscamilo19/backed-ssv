@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import type { Repository } from "typeorm"
+import  { Repository } from "typeorm"
 import { Doctor } from "./entities/doctor.entity"
 import { Appointment } from "src/appointments/entities/appointment.entity"
 
