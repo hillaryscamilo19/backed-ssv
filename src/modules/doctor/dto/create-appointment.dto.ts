@@ -6,16 +6,16 @@ export class CreateAppointmentDto {
 
   @IsString()
   @IsNotEmpty()
-  horaInicio: string
+  lisp_HoraIniProceso: string
 
   @IsString()
   @IsNotEmpty()
-  horaFin: string
+  lisp_HoraFin: string
 
   @IsString()
   @IsNotEmpty()
-  doctorId: string
+  doct_IdDoctor: string
 
   @IsNotEmpty()
-  pacienteId: number
+  lisp_idDoctor: number
 }

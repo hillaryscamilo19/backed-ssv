@@ -1,46 +1,73 @@
-import { Doctor } from "src/modules/doctor/entities/doctor.entity"
-import { Patient } from "src/modules/doctor/entities/paciente.entity"
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Doctor } from 'src/modules/doctor/entities/doctor.entity';
+import { Patient } from 'src/modules/doctor/entities/paciente.entity';
 
 
-@Entity("Citas")
+@Entity('dbo.s_Cita')
 export class Appointment {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn({ name: 'cita_IdDoctor' })
+  cita_IdDocto: number;
 
-  @Column()
-  fecha: Date
+  @Column({ name: 'cita_IdDoctor' })
+  cita_IdDoctor: string;
 
-  @Column({ length: 6 })
-  horaInicio: string
+  @Column({ name: 'cita_Fecha', type: 'datetime' })
+  fecha: Date;
 
-  @Column({ length: 6 })
-  horaFin: string
+  @Column({ name: 'cita_hora' })
+  hora: string;
 
-  @Column({ default: false })
-  completada: boolean
+  @Column({ name: 'cita_NumeroExpediente', nullable: true })
+  numeroExpediente?: string;
 
-  @Column({ default: "PROGRAMADA" })
-  estado: string
+  @Column({ name: 'cita_HoraNumero', nullable: true })
+  horaNumero?: number;
 
-  @ManyToOne(
-    () => Doctor,
-    (doctor) => doctor.appointments,
-  )
-  @JoinColumn({ name: "doctorId" })
-  doctor: Doctor
+  @Column({ name: 'cita_Nombre' })
+  nombre: string;
 
-  @Column()
-  doctorId: string
+  @Column({name: ''})
+  @Column({ name: 'cita_Apellido' })
+  apellido: string;
 
-  @ManyToOne(
-    () => Patient,
-    (patient) => patient.appointments,
-  )
-  @JoinColumn({ name: "pacienteId" })
-  patient: Patient
+  @Column({ name: 'cita_Telefono', nullable: true })
+  telefono?: string;
 
-  @Column()
-  pacienteId: number
+  @Column({ name: 'cita_Celular', nullable: true })
+  celular?: string;
+
+  @Column({ name: 'cita_IdSeguro', nullable: true })
+  idSeguro?: string;
+
+  @Column({ name: 'cita_IdPlanSeguro', nullable: true })
+  idPlanSeguro?: string;
+
+  @Column({ name: 'cita_Comentario', nullable: true })
+  comentario?: string;
+
+  @Column({ name: 'cita_EstatusConf', default: 'PROGRAMADA' })
+  estatusConf: string;
+
+  @Column({ name: 'cita_Email', nullable: true })
+  email?: string;
+
+  @Column({ name: 'cita_Nota', nullable: true })
+  nota?: string;
+
+  @Column({ name: 'cita_NumeroAfiliado', nullable: true })
+  numeroAfiliado?: string;
+
+  @Column({ name: 'cita_NumeroPoliza', nullable: true })
+  numeroPoliza?: string;
+
+  @Column({ name: 'cita_Prioridad', nullable: true })
+  prioridad?: number;
+
+  @ManyToOne(() => Doctor)
+  @JoinColumn({ name: 'cita_IdDoctor', referencedColumnName: 'doct_IdDoctor' })
+  doctor: Doctor;
+
+  @ManyToOne(() => Patient, { nullable: true })
+  @JoinColumn({ name: 'cita_NumeroExpediente', referencedColumnName: 'numeroExpediente' })
+  patient: Patient;
 }
-

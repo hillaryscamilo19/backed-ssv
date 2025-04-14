@@ -1,86 +1,76 @@
-import { Appointment } from "src/appointments/entities/appointment.entity"
-import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
 
-@Entity("s_Doctor")
+@Entity('dbo.s_Doctor') // Nombre de la tabla en la base de datos
 export class Doctor {
-  @PrimaryColumn({ name: "doct_IdDoctor", length: 15 })
-  id: string
+  @PrimaryGeneratedColumn()
+  doct_IdDoctor: string; // ID autogenerado para la entidad
 
-  @Column({ name: "doct_Nombre", length: 50, nullable: true })
-  nombre: string
 
-  @Column({ name: "doct_Estatus", length: 1, nullable: true })
-  estatus: string
+  @Column({ name: 'doct_Nombre' })
+  doct_Nombre: string;
 
-  @Column({ name: "doct_ConsultaDom", nullable: true })
-  consultaDom: boolean
 
-  @Column({ name: "doct_ConsultaLun", nullable: true })
-  consultaLun: boolean
+  // Días de consulta
+  @Column({ name: 'doct_ConsultaDom', default: false })
+  doct_ConsultaDom: boolean;
 
-  @Column({ name: "doct_ConsultaMar", nullable: true })
-  consultaMar: boolean
+  @Column({ name: 'doct_ConsultaLun', default: false })
+  doct_ConsultaLun: boolean;
 
-  @Column({ name: "doct_ConsultaMie", nullable: true })
-  consultaMie: boolean
+  @Column({ name: 'doct_ConsultaMar', default: false })
+  doct_ConsultaMar: boolean;
 
-  @Column({ name: "doct_ConsultaJue", nullable: true })
-  consultaJue: boolean
+  @Column({ name: 'doct_ConsultaMie', default: false })
+  doct_ConsultaMie: boolean;
 
-  @Column({ name: "doct_ConsultaVie", nullable: true })
-  consultaVie: boolean
+  @Column({ name: 'doct_ConsultaJue', default: false })
+  doct_ConsultaJue: boolean;
 
-  @Column({ name: "doct_ConsultaSab", nullable: true })
-  consultaSab: boolean
+  @Column({ name: 'doct_ConsultaVie', default: false })
+  doct_ConsultaVie: boolean;
 
-  // Horarios de inicio de consulta para cada día
-  @Column({ name: "doct_HorIniConDom", length: 6, nullable: true })
-  horIniConDom: string
+  @Column({ name: 'doct_ConsultaSab', default: false })
+  doct_ConsultaSab: boolean;
+  
+  @Column({ name: 'doct_HorIniConDom', nullable: true })
+  doct_HorIniConDom: string;
 
-  @Column({ name: "doct_HorIniConLun", length: 6, nullable: true })
-  horIniConLun: string
+  @Column({ name: 'doct_HorFinConDom', nullable: true })
+  doct_HorFinConDom: string;
 
-  @Column({ name: "doct_HorIniConMar", length: 6, nullable: true })
-  horIniConMar: string
+  @Column({ name: 'doct_HorIniConLun', nullable: true })
+  doct_HorIniConLun: string;
 
-  @Column({ name: "doct_HorIniConMie", length: 6, nullable: true })
-  horIniConMie: string
+  @Column({ name: 'doct_HorFinConLun', nullable: true })
+  doct_HorFinConLun: string;
 
-  @Column({ name: "doct_HorIniConJue", length: 6, nullable: true })
-  horIniConJue: string
+  @Column({ name: 'doct_HorIniConMar', nullable: true })
+  doct_HorIniConMar: string;
 
-  @Column({ name: "doct_HorIniConVie", length: 6, nullable: true })
-  horIniConVie: string
+  @Column({ name: 'doct_HorFinConMar', nullable: true })
+  doct_HorFinConMar: string;
 
-  @Column({ name: "doct_HorIniConSab", length: 6, nullable: true })
-  horIniConSab: string
+  @Column({ name: 'doct_HorIniConMie', nullable: true })
+  doct_HorIniConMie: string;
 
-  // Horarios de fin de consulta para cada día
-  @Column({ name: "doct_HorFinConDom", length: 6, nullable: true })
-  horFinConDom: string
+  @Column({ name: 'doct_HorFinConMie', nullable: true })
+  doct_HorFinConMie: string;
 
-  @Column({ name: "doct_HorFinConLun", length: 6, nullable: true })
-  horFinConLun: string
+  @Column({ name: 'doct_HorIniConJue', nullable: true })
+  doct_HorIniConJue: string;
 
-  @Column({ name: "doct_HorFinConMar", length: 6, nullable: true })
-  horFinConMar: string
+  @Column({ name: 'doct_HorFinConJue', nullable: true })
+  doct_HorFinConJue: string;
 
-  @Column({ name: "doct_HorFinConMie", length: 6, nullable: true })
-  horFinConMie: string
+  @Column({ name: 'doct_HorIniConVie', nullable: true })
+  doct_HorIniConVie: string;
 
-  @Column({ name: "doct_HorFinConJue", length: 6, nullable: true })
-  horFinConJue: string
+  @Column({ name: 'doct_HorFinConVie', nullable: true })
+  doct_HorFinConVie: string;
 
-  @Column({ name: "doct_HorFinConVie", length: 6, nullable: true })
-  horFinConVie: string
+  @Column({ name: 'doct_HorIniConSab', nullable: true })
+  doct_HorIniConSab: string;
 
-  @Column({ name: "doct_HorFinConSab", length: 6, nullable: true })
-  horFinConSab: string
-
-  @OneToMany(
-    () => Appointment,
-    (appointment) => appointment.doctor,
-  )
-  appointments: Appointment[]
+  @Column({ name: 'doct_HorFinConSab', nullable: true })
+  doct_HorFinConSab: string;
 }
-

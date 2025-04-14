@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import  { Repository } from "typeorm"
+import { Any, Repository } from "typeorm"
 import { Appointment } from "./entities/appointment.entity"
 import { DoctorsService } from "src/modules/doctor/doctors.service"
-import { CreateAppointmentDto } from "src/modules/doctor/dto/create-appointment.dto"
+import { CreateAppointmentDto } from "./dto/create-appointment.dto"
 import { PatientsService } from "src/modules/patients/patients.service"
 
 @Injectable()
@@ -16,20 +16,23 @@ export class AppointmentsService {
   ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto): Promise<Appointment> {
-    const { doctorId, pacienteId, fecha } = createAppointmentDto
+    const { cita_IdDoctor, cita_NumeroExpediente, cita_Fecha } = createAppointmentDto
 
     // Verificar si el doctor existe
-    const doctor = await this.doctorsService.findOne(doctorId)
+    const doctor = await this.doctorsService.findOne(cita_IdDoctor)
 
-    // Verificar si el paciente existe
-    const patient = await this.patientsService.findOne(pacienteId)
+    // Verificar si el paciente existe (si se proporciona un número de expediente)
+    let patient: any
+    if (cita_NumeroExpediente) {
+      patient = await this.patientsService.findByExpediente(cita_NumeroExpediente)
+    }
 
     // Verificar disponibilidad del doctor
-    const appointmentDate = new Date(fecha)
-    const isAvailable = await this.doctorsService.checkAvailability(doctorId, appointmentDate)
+    const appointmentDate = new Date(cita_Fecha)
+    const isAvailable = await this.doctorsService.checkAvailability(cita_IdDoctor, appointmentDate)
 
     if (!isAvailable) {
-      const nextAvailability = await this.doctorsService.getNextAvailability(doctorId)
+      const nextAvailability = await this.doctorsService.getNextAvailability(cita_IdDoctor)
       if (nextAvailability) {
         throw new BadRequestException(
           `El doctor no está disponible en esta fecha. Próxima disponibilidad: ${nextAvailability.nextDate.toLocaleDateString()} de ${nextAvailability.startTime} a ${nextAvailability.endTime}`,
@@ -42,7 +45,6 @@ export class AppointmentsService {
     // Crear la cita
     const appointment = this.appointmentsRepository.create({
       ...createAppointmentDto,
-      fecha: appointmentDate,
       doctor,
       patient,
     })
@@ -56,9 +58,9 @@ export class AppointmentsService {
     })
   }
 
-  async findOne(id: number): Promise<Appointment> {
+  async findOne(id: string): Promise<Appointment> {
     const appointment = await this.appointmentsRepository.findOne({
-      where: { id },
+      where: { cita_IdDoctor: id },
       relations: ["doctor", "patient"],
     })
 
@@ -71,29 +73,27 @@ export class AppointmentsService {
 
   async findByDoctor(doctorId: string): Promise<Appointment[]> {
     return this.appointmentsRepository.find({
-      where: { doctorId },
+      where: { cita_IdDoctor: doctorId },
       relations: ["patient"],
     })
   }
 
-  async findByPatient(pacienteId: number): Promise<Appointment[]> {
+  async findByPatient(numeroExpediente: string): Promise<Appointment[]> {
     return this.appointmentsRepository.find({
-      where: { pacienteId },
+      where: {numeroExpediente: numeroExpediente },
       relations: ["doctor"],
     })
   }
 
-  async completeAppointment(id: number): Promise<Appointment> {
+  async completeAppointment(id: string): Promise<Appointment> {
     const appointment = await this.findOne(id)
-    appointment.completada = true
-    appointment.estado = "COMPLETADA"
+    appointment.estatusConf = "COMPLETADA"
     return this.appointmentsRepository.save(appointment)
   }
 
-  async cancelAppointment(id: number): Promise<Appointment> {
+  async cancelAppointment(id: string): Promise<Appointment> {
     const appointment = await this.findOne(id)
-    appointment.estado = "CANCELADA"
+    appointment.estatusConf = "CANCELADA"
     return this.appointmentsRepository.save(appointment)
   }
 }
-

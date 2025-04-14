@@ -1,22 +1,30 @@
-import { IsString, IsOptional, IsEmail, IsDateString } from "class-validator"
+import { IsNumber, IsString, IsEmail, IsOptional } from 'class-validator';
 
 export class PatientDto {
-  @IsString()
-  nombre: string
+  @IsNumber()
+  lisp_IdDoctor: number;
 
   @IsString()
-  apellidos: string
+  lisp_Nombre: string;
+
+  @IsString()
+  lisP_Apellido: string;
 
   @IsString()
   @IsOptional()
-  telefono?: string
+  lisp_NumeroExpediente?: string;
+
+  @IsString()
+  @IsOptional()
+  lisp_Telefono?: string;
+
+  @IsString()
+  @IsOptional()
+  lisp_Celular?: string;
 
   @IsEmail()
   @IsOptional()
-  email?: string
+  lisp_Email?: string;
 
-  @IsDateString()
-  @IsOptional()
-  fechaNacimiento?: Date
+  // Agrega aquí cualquier otro campo que necesites
 }
-

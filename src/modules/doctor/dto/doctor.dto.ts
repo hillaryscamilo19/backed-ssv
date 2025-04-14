@@ -2,7 +2,7 @@ import { IsString, IsOptional, IsBoolean } from "class-validator"
 
 export class DoctorDto {
   @IsString()
-  id: string
+  doct_IdDoctor: string
 
   @IsString()
   nombre: string
@@ -13,86 +13,86 @@ export class DoctorDto {
 
   @IsBoolean()
   @IsOptional()
-  consultaDom?: boolean
+  doct_ConsultaDom?: boolean
 
   @IsBoolean()
   @IsOptional()
-  consultaLun?: boolean
+  doct_ConsultaLun?: boolean
 
   @IsBoolean()
   @IsOptional()
-  consultaMar?: boolean
+  doct_ConsultaMar?: boolean
 
   @IsBoolean()
   @IsOptional()
-  consultaMie?: boolean
+  doct_ConsultaMie?: boolean
 
   @IsBoolean()
   @IsOptional()
-  consultaJue?: boolean
+  doct_ConsultaJue?: boolean
 
   @IsBoolean()
   @IsOptional()
-  consultaVie?: boolean
+  doct_ConsultaVie?: boolean
 
   @IsBoolean()
   @IsOptional()
-  consultaSab?: boolean
+  doct_ConsultaSab?: boolean
 
   @IsString()
   @IsOptional()
-  horIniConDom?: string
+  doct_HorIniConDom?: string
 
   @IsString()
   @IsOptional()
-  horIniConLun?: string
+  doct_HorIniConLun?: string
 
   @IsString()
   @IsOptional()
-  horIniConMar?: string
+  doct_HorIniConMar?: string
 
   @IsString()
   @IsOptional()
-  horIniConMie?: string
+  doct_HorIniConMie?: string
 
   @IsString()
   @IsOptional()
-  horIniConJue?: string
+  doct_HorIniConJue?: string
 
   @IsString()
   @IsOptional()
-  horIniConVie?: string
+  doct_HorIniConVie?: string
 
   @IsString()
   @IsOptional()
-  horIniConSab?: string
+  doct_HorIniConSab?: string
 
   @IsString()
   @IsOptional()
-  horFinConDom?: string
+  doct_HorIniCirDom?: string
 
   @IsString()
   @IsOptional()
-  horFinConLun?: string
+  doct_HorFinCirDom?: string
 
   @IsString()
   @IsOptional()
-  horFinConMar?: string
+  doct_HorFinCirMar?: string
 
   @IsString()
   @IsOptional()
-  horFinConMie?: string
+  doct_HorFinCirMie?: string
 
   @IsString()
   @IsOptional()
-  horFinConJue?: string
+  doct_HorFinCirJue?: string
 
   @IsString()
   @IsOptional()
-  horFinConVie?: string
+  doct_HorFinCirVie?: string
 
   @IsString()
   @IsOptional()
-  horFinConSab?: string
+  doct_HorFinCirSab?: string
 }
 

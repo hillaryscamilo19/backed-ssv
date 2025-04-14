@@ -1,22 +1,75 @@
-import { IsString, IsDateString, IsNotEmpty } from "class-validator"
+import { IsString, IsDateString, IsNotEmpty, IsOptional, IsEmail, IsNumber } from "class-validator"
 
 export class CreateAppointmentDto {
+  @IsString()
+  @IsNotEmpty()
+  cita_IdDoctor: string
+
   @IsDateString()
-  fecha: string
+  @IsNotEmpty()
+  cita_Fecha: string
 
   @IsString()
   @IsNotEmpty()
-  horaInicio: string
+  cita_hora: string
+
+  @IsString()
+  @IsOptional()
+  cita_NumeroExpediente?: string
+
+  @IsNumber()
+  @IsOptional()
+  cita_HoraNumero?: number
 
   @IsString()
   @IsNotEmpty()
-  horaFin: string
+  cita_Nombre: string
 
   @IsString()
   @IsNotEmpty()
-  doctorId: string
+  cita_Apellido: string
 
-  @IsNotEmpty()
-  pacienteId: number
+  @IsString()
+  @IsOptional()
+  cita_Telefono?: string
+
+  @IsString()
+  @IsOptional()
+  cita_Celular?: string
+
+  @IsString()
+  @IsOptional()
+  cita_IdSeguro?: string
+
+  @IsString()
+  @IsOptional()
+  cita_IdPlanSeguro?: string
+
+  @IsString()
+  @IsOptional()
+  cita_Comentario?: string
+
+  @IsString()
+  @IsOptional()
+  cita_EstatusConf?: string = "PROGRAMADA"
+
+  @IsEmail()
+  @IsOptional()
+  cita_Email?: string
+
+  @IsString()
+  @IsOptional()
+  cita_Nota?: string
+
+  @IsString()
+  @IsOptional()
+  cita_NumeroAfiliado?: string
+
+  @IsString()
+  @IsOptional()
+  cita_NumeroPoliza?: string
+
+  @IsNumber()
+  @IsOptional()
+  cita_Prioridad?: number
 }
-

@@ -1,31 +1,30 @@
-import { Appointment } from "src/appointments/entities/appointment.entity"
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
 
-
-@Entity("Pacientes")
+@Entity('lisp') // Nombre de la tabla en la base de datos
 export class Patient {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number; // ID autogenerado para la entidad
 
-  @Column({ length: 50 })
-  nombre: string
+  @Column({ name: 'lisp_IdDoctor' }) // Especifica el nombre de la columna en la BD
+  doct_IdDoctor: number;
 
-  @Column({ length: 50 })
-  apellidos: string
+  @Column({ name: 'lisp_Nombre' })
+  nombre: string;
 
-  @Column({ length: 13, nullable: true })
-  telefono: string
+  @Column({ name: 'lisP_Apellido' })
+  apellidos: string;
 
-  @Column({ length: 100, nullable: true })
-  email: string
+  @Column({ name: 'lisp_NumeroExpediente', nullable: true })
+  numeroExpediente?: string;
 
-  @Column({ nullable: true })
-  fechaNacimiento: Date
+  @Column({ name: 'lisp_Telefono', nullable: true })
+  telefono?: string;
 
-  @OneToMany(
-    () => Appointment,
-    (appointment) => appointment.patient,
-  )
-  appointments: Appointment[]
+  @Column({ name: 'lisp_Celular', nullable: true })
+  celular?: string;
+
+  @Column({ name: 'lisp_Email', nullable: true })
+  email?: string;
+
+  // Agrega aquí otros campos que necesites
 }
-
