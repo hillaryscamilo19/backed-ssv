@@ -22,10 +22,7 @@ export class AppointmentsService {
     const doctor = await this.doctorsService.findOne(cita_IdDoctor)
 
     // Verificar si el paciente existe (si se proporciona un número de expediente)
-    let patient: any
-    if (cita_NumeroExpediente) {
-      patient = await this.patientsService.findByExpediente(cita_NumeroExpediente)
-    }
+
 
     // Verificar disponibilidad del doctor
     const appointmentDate = new Date(cita_Fecha)
@@ -46,7 +43,7 @@ export class AppointmentsService {
     const appointment = this.appointmentsRepository.create({
       ...createAppointmentDto,
       doctor,
-      patient,
+
     })
 
     return this.appointmentsRepository.save(appointment)

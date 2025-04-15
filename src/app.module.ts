@@ -2,6 +2,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DoctorsModule } from './modules/doctor/doctors.module';
+import { Appointment } from './appointments/entities/appointment.entity';
+import { AppointmentsModule } from './appointments/appointments.module';
+import { PatientsModule } from './modules/patients/patients.module';
 
 
 @Module({
@@ -20,7 +23,9 @@ import { DoctorsModule } from './modules/doctor/doctors.module';
       logging: true, 
       entities: ['dist/**/*.entity{.ts,.js}'], 
     }),
-    DoctorsModule
+    DoctorsModule,
+    AppointmentsModule,
+    PatientsModule
 
   ],
 })

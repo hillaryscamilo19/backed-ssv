@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
-import { PatientDto } from "./dto/patient.dto";
-import { Patient } from "../doctor/entities/paciente.entity";
+import { PatientDto } from './dto/patient.dto';
+import { Patient } from './entities/patients.entity';
+import { promises } from 'dns';
 
 @Injectable()
 export class PatientsService {
@@ -17,64 +18,31 @@ export class PatientsService {
   }
 
   async findOne(id: number): Promise<Patient> {
-    // Usar los nombres de propiedad de la entidad, no los nombres de columna de la BD
-    const patient = await this.patientsRepository.findOneBy({ 
-      doct_IdDoctor: id 
-    });
-    
+    const patient = await this.patientsRepository.findOneBy({ lisp_IdDoctor: id });
     if (!patient) {
-      throw new NotFoundException(`Paciente con ID ${id} no encontrado`);
-    }
-    return patient;
-  }
-
-  async findByExpediente(numeroExpediente: string): Promise<Patient> {
-    // Usar los nombres de propiedad de la entidad, no los nombres de columna de la BD
-    const patient = await this.patientsRepository.findOneBy({ 
-      numeroExpediente: numeroExpediente 
-    });
-    
-    if (!patient) {
-      throw new NotFoundException(`Paciente con número de expediente ${numeroExpediente} no encontrado`);
+      throw new NotFoundException(`Patient with ID ${id} not found`);
     }
     return patient;
   }
 
   async create(patientDto: PatientDto): Promise<Patient> {
-    // Mapear el DTO a la entidad
-    const patientData = {
-      doct_IdDoctor: patientDto.lisp_IdDoctor,
-      nombre: patientDto.lisp_Nombre,
-      apellidos: patientDto.lisP_Apellido,
-      numeroExpediente: patientDto.lisp_NumeroExpediente,
-      telefono: patientDto.lisp_Telefono,
-      celular: patientDto.lisp_Celular,
-      email: patientDto.lisp_Email
-    };
-    
-    const patient = this.patientsRepository.create(patientData);
-    return this.patientsRepository.save(patient);
+    const newPatient = this.patientsRepository.create(patientDto);
+    return this.patientsRepository.save(newPatient);
   }
 
   async update(id: number, patientDto: PatientDto): Promise<Patient> {
-    const patient = await this.findOne(id);
-    
-    // Mapear los campos del DTO a propiedades de la entidad
-    const updateData = {
-      nombre: patientDto.lisp_Nombre,
-      apellidos: patientDto.lisP_Apellido,
-      numeroExpediente: patientDto.lisp_NumeroExpediente,
-      telefono: patientDto.lisp_Telefono,
-      celular: patientDto.lisp_Celular,
-      email: patientDto.lisp_Email
-    };
-    
-    this.patientsRepository.merge(patient, updateData);
-    return this.patientsRepository.save(patient);
+    await this.patientsRepository.update({ lisp_IdDoctor: id }, patientDto);
+    return this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {
-    const patient = await this.findOne(id);
-    await this.patientsRepository.remove(patient);
+    const result = await this.patientsRepository.delete({ lisp_IdDoctor: id });
+    if (result.affected === 0) {
+      throw new NotFoundException(`Patient with ID ${id} not found`);
+    }
   }
+async findByExpediente(patientDto: PatientDto): Promise<void>{
+
+}
+
 }

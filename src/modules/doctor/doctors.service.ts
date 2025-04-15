@@ -28,9 +28,6 @@ export class DoctorsService {
     }
     return doctor;
   }
-
-
-
   async getNextAvailability(doctorId: string): Promise<{ nextDate: Date; startTime: string; endTime: string } | null> {
     const doctor = await this.findOne(doctorId)
     const today = new Date()
