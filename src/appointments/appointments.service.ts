@@ -47,7 +47,7 @@ export class AppointmentsService {
       }
     }
 
-    // Create and save appointment
+    //Create and save appointment
     const newAppointment = this.appointmentsRepository.create(createAppointmentDto);
     return this.appointmentsRepository.save(newAppointment);
   }
@@ -60,7 +60,7 @@ export class AppointmentsService {
 
   async findOne(id: string): Promise<Appointment> {
     const appointment = await this.appointmentsRepository.findOne({
-      where: { doct_IdDoctor: parseInt(id) },
+      where: { doct_IdDoctor: id },
       relations: ["doctor", "patient"],
     });
 
@@ -79,7 +79,7 @@ export class AppointmentsService {
 
   async findByPatient(patientId: string): Promise<Appointment[]> {
     return this.appointmentsRepository.find({
-      where: { doct_IdDoctor: +patientId },
+      where: { doct_IdDoctor: patientId },
       relations: ["doctor"],
     });
   }
@@ -96,7 +96,7 @@ export class AppointmentsService {
     return this.appointmentsRepository.save(appointment);
   }
 
-  // Method to check doctor availability
+  //Method to check doctor availability
   async checkDoctorAvailability(doctorId: string, date: Date): Promise<boolean> {
     const doctor = await this.doctorsService.findOne(doctorId);
 
@@ -109,7 +109,7 @@ export class AppointmentsService {
     const minutes = date.getMinutes();
     const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
-    // Check if doctor accepts appointments on this day
+    //Check if doctor accepts appointments on this day
     let isDayAvailable = false;
     let startTimeField = '';
     let endTimeField = '';
@@ -156,7 +156,7 @@ export class AppointmentsService {
       return false;
     }
 
-    // Check if the time is within doctor's appointment hours
+    //Check if the time is within doctor's appointment hours
     const startTime = doctor[startTimeField];
     const endTime = doctor[endTimeField];
 
@@ -164,12 +164,12 @@ export class AppointmentsService {
       return false;
     }
 
-    // Check if the time is within range
+    //Check if the time is within range
     if (timeString < startTime || timeString > endTime) {
       return false;
     }
 
-    // Check if there are already scheduled appointments for this time
+    //Check if there are already scheduled appointments for this time
     const existingAppointments = await this.appointmentsRepository.count({
       where: {
         doct_IdDoctor: doctorId,
@@ -177,7 +177,7 @@ export class AppointmentsService {
       }
     });
 
-    // Limit based on maximum appointments per day
+    //Limit based on maximum appointments per day
     let maxAppointments = 1;
     switch (dayOfWeek) {
       case 0: maxAppointments = doctor.doct_CantCitaDom || 1; break;
