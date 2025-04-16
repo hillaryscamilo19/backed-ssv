@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { PatientDto } from './dto/patient.dto';
 import { Patient } from './entities/patients.entity';
-import { promises } from 'dns';
+
 
 @Injectable()
 export class PatientsService {
@@ -18,9 +18,9 @@ export class PatientsService {
   }
 
   async findOne(id: number): Promise<Patient> {
-    const patient = await this.patientsRepository.findOneBy({ lisp_IdDoctor: id });
+    const patient = await this.patientsRepository.findOneBy({ expe_NumeroExpediente: id });
     if (!patient) {
-      throw new NotFoundException(`Patient with ID ${id} not found`);
+      throw new NotFoundException(`Patient with record number ${id} not found`);
     }
     return patient;
   }
@@ -31,18 +31,39 @@ export class PatientsService {
   }
 
   async update(id: number, patientDto: PatientDto): Promise<Patient> {
-    await this.patientsRepository.update({ lisp_IdDoctor: id }, patientDto);
+    await this.patientsRepository.update({ expe_NumeroExpediente: id }, patientDto);
     return this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.patientsRepository.delete({ lisp_IdDoctor: id });
+    const result = await this.patientsRepository.delete({ expe_NumeroExpediente: id });
     if (result.affected === 0) {
-      throw new NotFoundException(`Patient with ID ${id} not found`);
+      throw new NotFoundException(`Patient with record number ${id} not found`);
     }
   }
-async findByExpediente(patientDto: PatientDto): Promise<void>{
 
-}
+  async findByDoctor(doctorId: string): Promise<Patient[]> {
+    return this.patientsRepository.find({
+      where: { expe_IdDoctor: doctorId }
+    });
+  }
+  
+  async findByName(name: string, lastName: string): Promise<Patient[]> {
+    return this.patientsRepository.createQueryBuilder('patient')
+      .where('patient.expe_Nombres LIKE :name', { name: `%${name}%` })
+      .andWhere('patient.expe_Apellidos LIKE :lastName', { lastName: `%${lastName}%` })
+      .getMany();
+  }
 
+  async findByIdentification(cedula: string): Promise<Patient[]> {
+    return this.patientsRepository.find({
+      where: { expe_Cedula: cedula }
+    });
+  }
+  
+  async findByEmail(email: string): Promise<Patient[]> {
+    return this.patientsRepository.find({
+      where: { expe_Email: email }
+    });
+  }
 }

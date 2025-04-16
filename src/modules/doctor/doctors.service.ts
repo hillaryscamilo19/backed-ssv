@@ -129,15 +129,13 @@ export class DoctorsService {
 
     const appointments = await this.appointmentsRepository.find({
       where: {
-        cita_IdDoctor: doctorId,  // Usando el nombre de propiedad de la entidad
-        fecha: date,         // Usando el nombre de propiedad de la entidad
-        estatusConf: "PROGRAMADA"  // Usando el nombre de propiedad de la entidad
+        doct_IdDoctor: doctorId,  
+        doct_Estatus: "PROGRAMADA"  
       },
     });
 
-    // Si ya tiene citas activas, no está disponible
+ 
     return appointments.length === 0;
   }
 
-  // El resto del código del servicio...
 }

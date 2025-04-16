@@ -15,7 +15,7 @@ export class CreateAppointmentDto {
 
   @IsString()
   @IsOptional()
-  cita_NumeroExpediente?: string
+  cita_NumeroExpediente: number
 
   @IsNumber()
   @IsOptional()

@@ -1,24 +1,25 @@
 import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
 
-@Entity('dbo.s_ListaPaciente') // Nombre de la tabla en la base de datos
+@Entity('dbo.s_Expediente') // Nombre de la tabla en la base de datos
 export class Patient {
-  @PrimaryGeneratedColumn({ name: 'lisp_IdListaEspecial' })
-  lisp_IdListaEspecia: number;
+  @PrimaryGeneratedColumn({ name: 'expe_NumeroExpediente' })
+  expe_NumeroExpediente: number;
 
-  @Column({name: 'lisp_IdListaEspecial'})
-  lisp_IdListaEspecial: number;
+  @Column({name: 'expe_Apellidos'})
+  expe_Apellidos: number;
 
-  @Column({ name: 'lisp_IdDoctor' }) // Especifica el nombre de la columna en la BD
-  doct_IdDoctor: number;
+  @Column({ name: 'expe_Sexo' }) // Especifica el nombre de la columna en la BD
+  expe_Sexo: number;
 
-  @Column({ name: 'lisp_Nombre' })
-  nombre: string;
+  @Column({ name: 'expe_IdDoctor' })
+  expe_IdDoctor: string;
 
-  @Column({ name: 'lisP_Apellido' })
-  apellidos: string;
+  @Column({ name: 'expe_FechaNacimiento' })
+  expe_FechaNacimiento: Date;
 
-  @Column({ name: 'lisp_NumeroExpediente', nullable: true })
-  numeroExpediente?: string;
+  @Column({ name: 'expe_Nombres' })
+  apellexpe_Nombres: string;
+
 
 
 

@@ -9,7 +9,6 @@ export class Doctor {
   @Column({ name: 'doct_Nombre' })
   doct_Nombre: string;
 
-
   // Días de consulta
   @Column({ name: 'doct_ConsultaDom', default: false })
   doct_ConsultaDom: boolean;
@@ -38,8 +37,37 @@ export class Doctor {
   @Column({ name: 'doct_HorFinConDom', nullable: true })
   doct_HorFinConDom: string;
 
-  @Column({ name: 'doct_HorIniConLun', nullable: true })
-  doct_HorIniConLun: string;
+  
+  @Column({ name: 'doct_CitaDom', nullable: true })
+  doct_CitaDom: boolean;
+  
+  @Column({ name: 'doct_CitaLun', nullable: true })
+  doct_CitaLun: boolean;
+  
+  @Column({ name: 'doct_CitaMar', nullable: true })
+  doct_CitaMar: boolean;
+
+
+  @Column({ name: 'doct_CitaMie', nullable: true })
+  doct_CitaMie: boolean;
+
+  @Column({ name: 'doct_CitaJue', nullable: true })
+  doct_CitaJue: boolean;
+
+  @Column({ name: 'doct_CitaVie', nullable: true })
+  doct_CitaVie: boolean;
+
+  
+  @Column({ name: 'doct_CitaSab', nullable: true })
+  doct_CitaSab: boolean;
+
+  @Column({ name: 'doct_HorIniCitDom', nullable: true })
+  doct_HorIniCitDom: string;
+  @Column({ name: 'doct_HorFinCitDom', nullable: true })
+  doct_HorFinCitDom: string;
+
+  @Column({ name: 'doct_HorIniCitLun', nullable: true })
+  doct_HorIniCitLun: string;
 
   @Column({ name: 'doct_HorFinConLun', nullable: true })
   doct_HorFinConLun: string;
@@ -47,13 +75,17 @@ export class Doctor {
   @Column({ name: 'doct_HorIniConMar', nullable: true })
   doct_HorIniConMar: string;
 
+  @Column({name: 'doct_HorIniConLun' , nullable: true })
+  doct_HorIniConLun: string;
+
+  @Column({name: 'doct_HorIniConMie' , nullable: true})
+  doct_HorIniConMie:string;
+
+
   @Column({ name: 'doct_HorFinConMar', nullable: true })
   doct_HorFinConMar: string;
 
   @Column({ name: 'doct_HorIniConMie', nullable: true })
-  doct_HorIniConMie: string;
-
-  @Column({ name: 'doct_HorFinConMie', nullable: true })
   doct_HorFinConMie: string;
 
   @Column({ name: 'doct_HorIniConJue', nullable: true })
@@ -73,4 +105,26 @@ export class Doctor {
 
   @Column({ name: 'doct_HorFinConSab', nullable: true })
   doct_HorFinConSab: string;
+
+
+  @Column({ name: 'doct_CantCitaDom', nullable: true })
+  doct_CantCitaDom: number;
+
+  @Column({ name: 'doct_HorIniConSab', nullable: true })
+  doct_CantCitaLun: number;
+
+  @Column({ name: 'doct_CantCitaMar', nullable: true })
+  doct_CantCitaMar: number;
+
+  @Column({ name: 'doct_CantCitaMie', nullable: true })
+  doct_CantCitaMie: number;
+
+  @Column({ name: 'doct_CantCitaJue', nullable: true })
+  doct_CantCitaJue: number;
+
+  @Column({ name: 'doct_CantCitaVie', nullable: true })
+  doct_CantCitaVie: number;
+
+  @Column({ name: 'doct_CantCitaSab', nullable: true })
+  doct_CantCitaSab: number; 
 }
