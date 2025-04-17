@@ -174,6 +174,6 @@ export class Patient {
   @Column({ nullable: true })
   expe_Apodo: string;
 
-  @OneToMany(() => Appointment, (appointment) => appointment.doct_IdDoctor)
+  @OneToMany(() => Appointment, (appointment) => appointment.cita_IdDoctor)
   appointments: Appointment;
 }

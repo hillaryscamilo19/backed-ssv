@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Appointment } from "./entities/appointment.entity";
 import { DoctorsService } from "src/modules/doctor/doctors.service";
 import { PatientsService } from "src/modules/patients/patients.service";
+import { Appointment } from "./entities/appointment.entity";
 import { CreateAppointmentDto } from "./dto/create-appointment.dto";
+
 
 @Injectable()
 export class AppointmentsService {
@@ -16,17 +17,17 @@ export class AppointmentsService {
   ) { }
 
   async create(createAppointmentDto: CreateAppointmentDto): Promise<Appointment> {
-    const { cita_IdDoctor, cita_Fecha, cita_NumeroExpediente } = createAppointmentDto;
+    let { cita_IdDoctor, cita_Fecha, cita_NumeroExpediente } = createAppointmentDto;
 
-    // Verify if doctor exists
+    // Verificar si el doctor existe
     const doctor = await this.doctorsService.findOne(cita_IdDoctor);
     if (!doctor) {
       throw new NotFoundException(`Doctor with ID ${cita_IdDoctor} not found`);
     }
 
-    // Verify if patient exists (if record number is provided)
+    // Verificar si el paciente existe (si se proporciona el número de expediente)
     if (cita_NumeroExpediente) {
-      const patient = await this.patientsService.findOne(cita_NumeroExpediente);
+      const patient = await this.patientsService.findOne(Number(cita_NumeroExpediente));
       if (!patient) {
         throw new NotFoundException(`Patient with record number ${cita_NumeroExpediente} not found`);
       }
@@ -34,7 +35,7 @@ export class AppointmentsService {
 
     const appointmentDate = new Date(cita_Fecha);
 
-    // Check doctor availability
+    // Verificar disponibilidad del doctor
     const isAvailable = await this.checkDoctorAvailability(cita_IdDoctor, appointmentDate);
     if (!isAvailable) {
       const nextAvailability = await this.getNextDoctorAvailability(cita_IdDoctor);
@@ -47,20 +48,23 @@ export class AppointmentsService {
       }
     }
 
-    //Create and save appointment
-    const newAppointment = this.appointmentsRepository.create(createAppointmentDto);
-    return this.appointmentsRepository.save(newAppointment);
+    // Crear y guardar la cita
+    const appointment: Appointment = {
+      ...createAppointmentDto,
+      cita_IdDoctor: +cita_IdDoctor // asegúrate que sea un número
+    };
+    return this.appointmentsRepository.save(appointment);
   }
+
 
   async findAll(): Promise<Appointment[]> {
     return this.appointmentsRepository.find({
       relations: ["doctor", "patient"],
     });
   }
-
-  async findOne(id: string): Promise<Appointment> {
+  async findOne(id): Promise<Appointment> {
     const appointment = await this.appointmentsRepository.findOne({
-      where: { doct_IdDoctor: id },
+      where: { cita_IdDoctor: id },
       relations: ["doctor", "patient"],
     });
 
@@ -70,29 +74,31 @@ export class AppointmentsService {
     return appointment;
   }
 
-  async findByDoctor(doctorId: string): Promise<Appointment[]> {
+
+  async findByDoctor(doctorId: number): Promise<Appointment[]> {
     return this.appointmentsRepository.find({
-      where: { doct_IdDoctor: doctorId },
+      where: { cita_IdDoctor: doctorId },
       relations: ["patient"],
     });
   }
 
-  async findByPatient(patientId: string): Promise<Appointment[]> {
+
+  async findByPatient(patientId: number): Promise<Appointment[]> {
     return this.appointmentsRepository.find({
-      where: { doct_IdDoctor: patientId },
+      where: { cita_IdDoctor: patientId }, // <- este campo debe ser el correcto para paciente
       relations: ["doctor"],
     });
   }
 
   async completeAppointment(id: string): Promise<Appointment> {
     const appointment = await this.findOne(id);
-    appointment.doct_Estatus = "COMPLETADA";
+    appointment.cita_EstatusConf = "COMPLETADA";
     return this.appointmentsRepository.save(appointment);
   }
 
   async cancelAppointment(id: string): Promise<Appointment> {
     const appointment = await this.findOne(id);
-    appointment.doct_Estatus = "CANCELADA";
+    appointment.cita_EstatusConf = "CANCELADA";
     return this.appointmentsRepository.save(appointment);
   }
 
@@ -172,8 +178,8 @@ export class AppointmentsService {
     //Check if there are already scheduled appointments for this time
     const existingAppointments = await this.appointmentsRepository.count({
       where: {
-        doct_IdDoctor: doctorId,
-        doct_Estatus: 'PROGRAMADA'
+        cita_IdDoctor: doctorId,
+        cita_RegPorEstatusConf: 'PROGRAMADA'
       }
     });
 

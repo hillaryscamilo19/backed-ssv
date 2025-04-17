@@ -1,135 +1,95 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Doctor } from 'src/modules/doctor/entities/doctor.entity';
-import { Patient } from 'src/modules/doctor/entities/paciente.entity';
-
-
-@Entity('dbo.s_Doctor')
+import { Type } from 'class-transformer';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+@Entity('dbo.s_Cita')
 export class Appointment {
   @PrimaryGeneratedColumn()
-  doct_IdDoctor: string; // ID autogenerado para la entidad
+  @Type(() => Number)
+  cita_IdDoctor: number;
 
-  @Column({ name: 'doct_Nombre' })
-  doct_Nombre: string;
+  @Column({ name: 'cita_Fecha'})
+  cita_Fecha: Date;
 
-  // Días de consulta
-  @Column({ name: 'doct_ConsultaDom', default: false })
-  doct_ConsultaDom: boolean;
+  @Column({ name: 'cita_hora' })
+  cita_hora: string;
 
-  @Column({ name: 'doct_ConsultaLun', default: false })
-  doct_ConsultaLun: boolean;
+  @Column({ name: 'cita_NumeroExpediente' })
+  cita_NumeroExpediente: number;
 
-  @Column({ name: 'doct_Estatus'})
-  doct_Estatus: string;
+  @Column({ name: 'cita_HoraNumero' })
+  cita_HoraNumero: number;
 
-  @Column({ name: 'doct_ConsultaMar', default: false })
-  doct_ConsultaMar: boolean;
+  @Column({ name: 'cita_Nombre' })
+  cita_Nombre: string;
 
-  @Column({ name: 'doct_ConsultaMie', default: false })
-  doct_ConsultaMie: boolean;
+  @Column({ name: 'cita_Apellido' })
+  cita_Apellido: string;
 
-  @Column({ name: 'doct_ConsultaJue', default: false })
-  doct_ConsultaJue: boolean;
+  @Column({ name: 'cita_Telefono' })
+  cita_Telefono: string;
 
-  @Column({ name: 'doct_ConsultaVie', default: false })
-  doct_ConsultaVie: boolean;
+  @Column({ name: 'cita_IdSeguro' })
+  cita_IdSeguro: number;
 
-  @Column({ name: 'doct_ConsultaSab', default: false })
-  doct_ConsultaSab: boolean;
-  
-  @Column({ name: 'doct_HorIniConDom', nullable: true })
-  doct_HorIniConDom: string;
+  @Column({ name: 'cita_IdPlanSeguro' })
+  cita_IdPlanSeguro: number;
 
-  @Column({ name: 'doct_HorFinConDom', nullable: true })
-  doct_HorFinConDom: string;
+  @Column({ name: 'cita_Comentario', nullable: true })
+  cita_Comentario: string;
 
-  
-  @Column({ name: 'doct_CitaDom', nullable: true })
-  doct_CitaDom: boolean;
-  
-  @Column({ name: 'doct_CitaLun', nullable: true })
-  doct_CitaLun: boolean;
-  
-  @Column({ name: 'doct_CitaMar', nullable: true })
-  doct_CitaMar: boolean;
+  @Column({ name: 'cita_EstatusConf', nullable: true })
+  cita_EstatusConf: string;
 
+  @Column({ name: 'cita_FechaEstatusConf', type: 'datetime', nullable: true })
+  cita_FechaEstatusConf: Date;
 
-  @Column({ name: 'doct_CitaMie', nullable: true })
-  doct_CitaMie: boolean;
+  @Column({ name: 'cita_RegPorEstatusConf', nullable: true })
+  cita_RegPorEstatusConf: string;
 
-  @Column({ name: 'doct_CitaJue', nullable: true })
-  doct_CitaJue: boolean;
+  @Column({ name: 'cita_RegPor', nullable: true })
+  cita_RegPor: string;
 
-  @Column({ name: 'doct_CitaVie', nullable: true })
-  doct_CitaVie: boolean;
+  @Column({ name: 'cita_FecReg', type: 'datetime' })
+  cita_FecReg: Date;
 
-  
-  @Column({ name: 'doct_CitaSab', nullable: true })
-  doct_CitaSab: boolean;
+  @Column({ name: 'cita_Email', nullable: true })
+  cita_Email: string;
 
-  @Column({ name: 'doct_HorIniCitDom', nullable: true })
-  doct_HorIniCitDom: string;
-  @Column({ name: 'doct_HorFinCitDom', nullable: true })
-  doct_HorFinCitDom: string;
+  @Column({ name: 'cita_StsEmail', nullable: true })
+  cita_StsEmail: string;
 
-  @Column({ name: 'doct_HorIniCitLun', nullable: true })
-  doct_HorIniCitLun: string;
+  @Column({ name: 'cita_FechaEmail', type: 'datetime', nullable: true })
+  cita_FechaEmail: Date;
 
-  @Column({ name: 'doct_HorFinConLun', nullable: true })
-  doct_HorFinConLun: string;
+  @Column({ name: 'cita_ConfEmailUsada', nullable: true })
+  cita_ConfEmailUsada: string;
 
-  @Column({ name: 'doct_HorIniConMar', nullable: true })
-  doct_HorIniConMar: string;
+  @Column({ name: 'cita_Nota', nullable: true })
+  cita_Nota: string;
 
-  @Column({name: 'doct_HorIniConLun' , nullable: true })
-  doct_HorIniConLun: string;
+  @Column({ name: 'IdOrig', nullable: true })
+  IdOrig: string;
 
-  @Column({name: 'doct_HorIniConMie' , nullable: true})
-  doct_HorIniConMie:string;
+  @Column({ name: 'NumLista', nullable: true })
+  NumLista: number;
 
+  @Column({ name: 'IdConsultorio', nullable: true })
+  IdConsultorio: number;
 
-  @Column({ name: 'doct_HorFinConMar', nullable: true })
-  doct_HorFinConMar: string;
+  @Column({ name: 'IdEntidadRef', nullable: true })
+  IdEntidadRef: number;
 
-  @Column({ name: 'doct_HorIniConMie', nullable: true })
-  doct_HorFinConMie: string;
+  @Column({ name: 'cita_Celular', nullable: true })
+  cita_Celular: string;
 
-  @Column({ name: 'doct_HorIniConJue', nullable: true })
-  doct_HorIniConJue: string;
+  @Column({ name: 'NumPrecita', nullable: true })
+  NumPrecita: number;
 
-  @Column({ name: 'doct_HorFinConJue', nullable: true })
-  doct_HorFinConJue: string;
+  @Column({ name: 'cita_NumeroAfiliado', nullable: true })
+  cita_NumeroAfiliado: string;
 
-  @Column({ name: 'doct_HorIniConVie', nullable: true })
-  doct_HorIniConVie: string;
+  @Column({ name: 'cita_NumeroPoliza', nullable: true })
+  cita_NumeroPoliza: string;
 
-  @Column({ name: 'doct_HorFinConVie', nullable: true })
-  doct_HorFinConVie: string;
-
-  @Column({ name: 'doct_HorIniConSab', nullable: true })
-  doct_HorIniConSab: string;
-
-  @Column({ name: 'doct_HorFinConSab', nullable: true })
-  doct_HorFinConSab: string;
-
-
-  @Column({ name: 'doct_CantCitaDom', nullable: true })
-  doct_CantCitaDom: number;
-
-  @Column({ name: 'doct_HorIniConSab', nullable: true })
-  doct_CantCitaLun: number;
-
-  @Column({ name: 'doct_CantCitaMar', nullable: true })
-  doct_CantCitaMar: number;
-
-  @Column({ name: 'doct_CantCitaMie', nullable: true })
-  doct_CantCitaMie: number;
-
-  @Column({ name: 'doct_CantCitaJue', nullable: true })
-  doct_CantCitaJue: number;
-
-  @Column({ name: 'doct_CantCitaVie', nullable: true })
-  doct_CantCitaVie: number;
-
-  @Column({ name: 'doct_CantCitaSab', nullable: true })
-  doct_CantCitaSab: number; 
+  @Column({ name: 'cita_Prioridad', nullable: true })
+  cita_Prioridad: number;
 }

@@ -1,7 +1,11 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
-import { CreateAppointmentDto } from './dto/create-appointment.dto';
+
 import { Appointment } from './entities/appointment.entity';
+import { CreateAppointmentDto } from './dto/create-appointment.dto';
+
+
+
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -27,12 +31,12 @@ export class AppointmentsController {
   }
 
   @Get('doctor/:doct_IdDoctor')
-  findByDoctor(@Param('doct_IdDoctor') doct_IdDoctor: string) {
+  findByDoctor(@Param('doct_IdDoctor') doct_IdDoctor: number) {
     return this.appointmentsService.findByDoctor(doct_IdDoctor);
   }
 
   @Get('patient/:patientId')
-  findByPatient(@Param('patientId') patientId: string) {
+  findByPatient(@Param('patientId') patientId: number) {
     // No convertir a número para mantener la consistencia con string
     return this.appointmentsService.findByPatient(patientId);
   }
