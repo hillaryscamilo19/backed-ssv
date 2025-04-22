@@ -5,11 +5,11 @@ export class DoctorDto {
   doct_IdDoctor: string
 
   @IsString()
-  nombre: string
+  doct_Nombre: string
 
   @IsString()
   @IsOptional()
-  estatus?: string
+  doct_Estatus?: string
 
   @IsBoolean()
   @IsOptional()

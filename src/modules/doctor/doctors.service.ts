@@ -1,8 +1,12 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { Doctor } from "./entities/doctor.entity";
-import { Appointment } from "src/appointments/entities/appointment.entity";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Doctor } from './entities/doctor.entity';
+import { Appointment } from 'src/appointments/entities/appointment.entity';
 
 @Injectable()
 export class DoctorsService {
@@ -19,70 +23,74 @@ export class DoctorsService {
 
   async findOne(doct_IdDoctor: string): Promise<Doctor> {
     // Usar los nombres de propiedad de la entidad, no los nombres de columna de la BD
-    const doctor = await this.doctorsRepository.findOneBy({ 
-      doct_IdDoctor: doct_IdDoctor 
+    const doctor = await this.doctorsRepository.findOneBy({
+      doct_IdDoctor: doct_IdDoctor,
     });
-    
+
     if (!doctor) {
-      throw new NotFoundException(`Doctor con ID ${doct_IdDoctor} no encontrado`);
+      throw new NotFoundException(
+        `Doctor con ID ${doct_IdDoctor} no encontrado`,
+      );
     }
     return doctor;
   }
-  async getNextAvailability(doctorId: string): Promise<{ nextDate: Date; startTime: string; endTime: string } | null> {
-    const doctor = await this.findOne(doctorId)
-    const today = new Date()
+  async getNextAvailability(
+    doctorId: string,
+  ): Promise<{ nextDate: Date; startTime: string; endTime: string } | null> {
+    const doctor = await this.findOne(doctorId);
+    const today = new Date();
 
     // Buscar el próximo día disponible (hasta 30 días en el futuro)
     for (let i = 0; i < 30; i++) {
-      const checkDate = new Date(today)
-      checkDate.setDate(today.getDate() + i)
+      const checkDate = new Date(today);
+      checkDate.setDate(today.getDate() + i);
 
-      const isAvailable = await this.checkAvailability(doctorId, checkDate)
+      const isAvailable = await this.checkAvailability(doctorId, checkDate);
       if (isAvailable) {
-        const dayOfWeek = checkDate.getDay()
-        let startTime = ""
-        let endTime = ""
+        const dayOfWeek = checkDate.getDay();
+        let startTime = '';
+        let endTime = '';
 
         switch (dayOfWeek) {
           case 0:
-            startTime = doctor.doct_HorIniConDom
-            endTime = doctor.doct_HorFinConDom
-            break
+            startTime = doctor.doct_HorIniConDom;
+            endTime = doctor.doct_HorFinConDom;
+            break;
           case 1:
-            startTime = doctor.doct_HorIniConLun
-            endTime = doctor.doct_HorFinConLun
-            break
+            startTime = doctor.doct_HorIniConLun;
+            endTime = doctor.doct_HorFinConLun;
+            break;
           case 2:
-            startTime = doctor.doct_HorIniConMar
-            endTime = doctor.doct_HorFinConMar
-            break
+            startTime = doctor.doct_HorIniConMar;
+            endTime = doctor.doct_HorFinConMar;
+            break;
           case 3:
-            startTime = doctor.doct_HorIniConMie
-            endTime = doctor.doct_HorFinConMie
-            break
+            startTime = doctor.doct_HorIniConMie;
+            endTime = doctor.doct_HorFinConMie;
+            break;
           case 4:
-            startTime = doctor.doct_HorIniConJue
-            endTime = doctor.doct_HorFinConJue
-            break
+            startTime = doctor.doct_HorIniConJue;
+            endTime = doctor.doct_HorFinConJue;
+            break;
           case 5:
-            startTime = doctor.doct_HorIniConVie
-            endTime = doctor.doct_HorFinConVie
-            break
+            startTime = doctor.doct_HorIniConVie;
+            endTime = doctor.doct_HorFinConVie;
+            break;
           case 6:
-            startTime = doctor.doct_HorIniConSab
-            endTime = doctor.doct_HorFinConSab
-            break
+            startTime = doctor.doct_HorIniConSab;
+            endTime = doctor.doct_HorFinConSab;
+            break;
         }
 
         return {
           nextDate: checkDate,
           startTime,
           endTime,
-        }
+        };
       }
     }
 
-    return null
+    return null;
   }
 
   async checkAvailability(doctorId: string, date: Date): Promise<boolean> {
@@ -127,15 +135,20 @@ export class DoctorsService {
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
+    const parsedDoctorId = parseInt(doctorId);
+    if (isNaN(parsedDoctorId)) {
+      throw new BadRequestException(
+        `El ID del doctor no es un número válido: ${doctorId}`,
+      );
+    }
+
     const appointments = await this.appointmentsRepository.find({
       where: {
-        doct_IdDoctor: doctorId,  
-        doct_Estatus: "PROGRAMADA"  
+        cita_IdDoctor: parseInt(doctorId),
+        cita_EstatusConf: 'PROGRAMADA',
       },
     });
 
- 
     return appointments.length === 0;
   }
-
 }

@@ -1,13 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import { Appointment } from 'src/appointments/entities/appointment.entity';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, OneToMany } from 'typeorm';
 
 @Entity('dbo.s_Doctor') // Nombre de la tabla en la base de datos
 export class Doctor {
-  @PrimaryGeneratedColumn()
-  doct_IdDoctor: string; // ID autogenerado para la entidad
+  @PrimaryColumn()
+  doct_IdDoctor: string;
 
-
-  @Column({ name: 'doct_Nombre' })
+  @Column()
   doct_Nombre: string;
+
+  @OneToMany(() => Appointment, (appointment) => appointment.doctor)
+  citas: Appointment[];
 
   // Días de consulta
   @Column({ name: 'doct_ConsultaDom', default: false })
@@ -15,6 +18,9 @@ export class Doctor {
 
   @Column({ name: 'doct_ConsultaLun', default: false })
   doct_ConsultaLun: boolean;
+
+  @Column({name:'doct_Estatus'})
+  doct_Estatus: string;
 
   @Column({ name: 'doct_ConsultaMar', default: false })
   doct_ConsultaMar: boolean;
@@ -56,7 +62,6 @@ export class Doctor {
 
   @Column({ name: 'doct_CitaVie', nullable: true })
   doct_CitaVie: boolean;
-
   
   @Column({ name: 'doct_CitaSab', nullable: true })
   doct_CitaSab: boolean;
@@ -127,4 +132,8 @@ export class Doctor {
 
   @Column({ name: 'doct_CantCitaSab', nullable: true })
   doct_CantCitaSab: number; 
+
+  @OneToMany(() => Appointment, appointment => appointment.doctor)
+  appointments: Appointment[];
+    doctor: any;
 }

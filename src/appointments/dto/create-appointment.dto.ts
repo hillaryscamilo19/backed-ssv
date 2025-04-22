@@ -53,8 +53,7 @@ export class CreateAppointmentDto {
   cita_FechaEstatusConf?: Date;
 
   @IsOptional()
-  @IsString()
-  cita_RegPorEstatusConf?: Number;
+  cita_RegPorEstatusConf: String ;
 
   @IsOptional()
   @IsString()
@@ -90,9 +89,8 @@ export class CreateAppointmentDto {
   IdOrig?: string;
 
   @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  NumLista?: number;
+  @IsString()
+  NumLista?: string;
 
   @IsOptional()
   @IsNumber()

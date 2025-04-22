@@ -10,8 +10,9 @@ export class CreateAppointmentDto {
   @Type(() => Date)
   cita_Fecha: Date;
 
+  @Type(() => Date)
   @IsString()
-  cita_hora: string;
+  cita_hora: Date;
 
   @IsNumber()
   @Type(() => Number)

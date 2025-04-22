@@ -1,30 +1,43 @@
 import { Type } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Doctor } from 'src/modules/doctor/entities/doctor.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+import { Expediente } from './expediente.entity';
 @Entity('dbo.s_Cita')
 export class Appointment {
   @PrimaryGeneratedColumn()
-  @Type(() => Number)
-  cita_IdDoctor: number;
+  NumCita: number;
 
-  @Column({ name: 'cita_Fecha'})
-  cita_Fecha: Date;
+  @ManyToOne(() => Expediente)
+  @JoinColumn({ name: 'cita_NumeroExpediente', referencedColumnName: 'expe_NumeroExpediente' })
+  patient: Expediente;
 
-  @Column({ name: 'cita_hora' })
-  cita_hora: string;
-
-  @Column({ name: 'cita_NumeroExpediente' })
+  @Column()
   cita_NumeroExpediente: number;
 
-  @Column({ name: 'cita_HoraNumero' })
-  cita_HoraNumero: number;
+  @ManyToOne(() => Expediente, (expediente) => expediente.citas)
+  @JoinColumn({ name: 'cita_NumeroExpediente', referencedColumnName: 'expe_NumeroExpediente' })
+  paciente: Expediente;
 
-  @Column({ name: 'cita_Nombre' })
+  @Column()
+  cita_IdDoctor: Number;
+
+  @ManyToOne(() => Doctor, (doctor) => doctor.citas)
+  @JoinColumn({ name: 'cita_IdDoctor', referencedColumnName: 'doct_IdDoctor' })
+  doctor: Doctor;
+
+  @Column({})
+  cita_Fecha: Date;
+
+  @Column()
+  cita_hora: string;
+
+  @Column({ nullable: true })
   cita_Nombre: string;
 
-  @Column({ name: 'cita_Apellido' })
+  @Column({ nullable: true })
   cita_Apellido: string;
 
-  @Column({ name: 'cita_Telefono' })
+  @Column({ nullable: true })
   cita_Telefono: string;
 
   @Column({ name: 'cita_IdSeguro' })
@@ -33,63 +46,78 @@ export class Appointment {
   @Column({ name: 'cita_IdPlanSeguro' })
   cita_IdPlanSeguro: number;
 
-  @Column({ name: 'cita_Comentario', nullable: true })
-  cita_Comentario: string;
+  @Column({ name: 'cita_Comentario' })
+  cita_Comentario?: string;
 
-  @Column({ name: 'cita_EstatusConf', nullable: true })
-  cita_EstatusConf: string;
+  @Column({ name: 'cita_EstatusConf' })
+  cita_EstatusConf?: string;
 
-  @Column({ name: 'cita_FechaEstatusConf', type: 'datetime', nullable: true })
-  cita_FechaEstatusConf: Date;
+  @Column({ name: 'cita_FechaEstatusConf', type: 'datetime' })
+  cita_FechaEstatusConf?: Date;
 
-  @Column({ name: 'cita_RegPorEstatusConf', nullable: true })
-  cita_RegPorEstatusConf: string;
+  @Column({ name: 'cita_RegPorEstatusConf' })
+  cita_RegPorEstatusConf?: String;
 
-  @Column({ name: 'cita_RegPor', nullable: true })
-  cita_RegPor: string;
+  @Column({ name: 'cita_RegPor' })
+  cita_RegPor?: string;
 
   @Column({ name: 'cita_FecReg', type: 'datetime' })
-  cita_FecReg: Date;
+  cita_FecReg?: Date;
 
-  @Column({ name: 'cita_Email', nullable: true })
-  cita_Email: string;
+  @Column({ name: 'cita_Email' })
+  cita_Email?: string;
 
-  @Column({ name: 'cita_StsEmail', nullable: true })
-  cita_StsEmail: string;
+  @Column({ name: 'cita_StsEmail' })
+  cita_StsEmail?: string;
 
-  @Column({ name: 'cita_FechaEmail', type: 'datetime', nullable: true })
-  cita_FechaEmail: Date;
+  @Column({ name: 'cita_FechaEmail', type: 'datetime' })
+  cita_FechaEmail?: Date;
 
-  @Column({ name: 'cita_ConfEmailUsada', nullable: true })
-  cita_ConfEmailUsada: string;
+  @Column({ name: 'cita_ConfEmailUsada' })
+  cita_ConfEmailUsada?: string;
 
-  @Column({ name: 'cita_Nota', nullable: true })
-  cita_Nota: string;
+  @Column({ name: 'cita_Nota' })
+  cita_Nota?: string;
 
-  @Column({ name: 'IdOrig', nullable: true })
-  IdOrig: string;
+  @Type(() => String)
+  @Column({ name: 'IdOrig' })
+  IdOrig?: string;
 
-  @Column({ name: 'NumLista', nullable: true })
+
+  @Type(() => Number)
+  @Column({ name: 'NumLista' })
   NumLista: number;
 
+  @Type(() => String)
   @Column({ name: 'IdConsultorio', nullable: true })
   IdConsultorio: number;
 
+  @Type(() => String)
   @Column({ name: 'IdEntidadRef', nullable: true })
   IdEntidadRef: number;
 
-  @Column({ name: 'cita_Celular', nullable: true })
+
+  @Type(() => String)
+  @Column({ name: 'cita_Celular' })
   cita_Celular: string;
 
-  @Column({ name: 'NumPrecita', nullable: true })
+  @Type(() => String)
+  @Column({ name: 'NumPrecita' })
   NumPrecita: number;
 
-  @Column({ name: 'cita_NumeroAfiliado', nullable: true })
+  @Type(() => String)
+  @Column({ name: 'cita_NumeroAfiliado' })
   cita_NumeroAfiliado: string;
 
-  @Column({ name: 'cita_NumeroPoliza', nullable: true })
+
+  @Type(() => String)
+  @Column({ name: 'cita_NumeroPoliza' })
   cita_NumeroPoliza: string;
 
-  @Column({ name: 'cita_Prioridad', nullable: true })
-  cita_Prioridad: number;
+  @Type(() => String)
+  @Column({ name: 'cita_Prioridad' })
+  cita_Prioridad?: number;
+
+  @OneToMany(() => Appointment, appointment => appointment.doctor)
+  appointments: Appointment[];
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { PatientDto } from './dto/patient.dto';
 import { Patient } from './entities/patients.entity';
@@ -9,10 +9,10 @@ export class PatientsController {
   constructor(private readonly patientsService: PatientsService) {}
 
   @Get()
-  findAll(): Promise<Patient[]> {
-    return this.patientsService.findAll();
+  async getAllPatients(@Query('page') page = 1, @Query('limit') limit = 50) {
+    return this.patientsService.findAll(Number(page), Number(limit));
   }
-
+  
   @Get(':lisp_IdListaEspecial')
   findOne(@Param('lisp_IdListaEspecial') id: string): Promise<Patient> {
     return this.patientsService.findOne(+id);

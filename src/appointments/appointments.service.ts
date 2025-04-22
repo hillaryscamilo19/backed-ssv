@@ -1,11 +1,14 @@
-import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { DoctorsService } from "src/modules/doctor/doctors.service";
-import { PatientsService } from "src/modules/patients/patients.service";
-import { Appointment } from "./entities/appointment.entity";
-import { CreateAppointmentDto } from "./dto/create-appointment.dto";
-
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { DoctorsService } from 'src/modules/doctor/doctors.service';
+import { PatientsService } from 'src/modules/patients/patients.service';
+import { Appointment } from './entities/appointment.entity';
+import { CreateAppointmentDto } from './dto/create-appointment.dto';
 
 @Injectable()
 export class AppointmentsService {
@@ -13,11 +16,14 @@ export class AppointmentsService {
     @InjectRepository(Appointment)
     private appointmentsRepository: Repository<Appointment>,
     private doctorsService: DoctorsService,
-    private patientsService: PatientsService
-  ) { }
+    private patientsService: PatientsService,
+  ) {}
 
-  async create(createAppointmentDto: CreateAppointmentDto): Promise<Appointment> {
-    let { cita_IdDoctor, cita_Fecha, cita_NumeroExpediente } = createAppointmentDto;
+  async create(
+    createAppointmentDto: CreateAppointmentDto,
+  ): Promise<Appointment> {
+    let { cita_IdDoctor, cita_Fecha, cita_NumeroExpediente } =
+      createAppointmentDto;
 
     // Verificar si el doctor existe
     const doctor = await this.doctorsService.findOne(cita_IdDoctor);
@@ -27,46 +33,58 @@ export class AppointmentsService {
 
     // Verificar si el paciente existe (si se proporciona el número de expediente)
     if (cita_NumeroExpediente) {
-      const patient = await this.patientsService.findOne(Number(cita_NumeroExpediente));
+      const patient = await this.patientsService.findOne(
+        Number(cita_NumeroExpediente),
+      );
       if (!patient) {
-        throw new NotFoundException(`Patient with record number ${cita_NumeroExpediente} not found`);
+        throw new NotFoundException(
+          `Patient with record number ${cita_NumeroExpediente} not found`,
+        );
       }
     }
 
     const appointmentDate = new Date(cita_Fecha);
 
     // Verificar disponibilidad del doctor
-    const isAvailable = await this.checkDoctorAvailability(cita_IdDoctor, appointmentDate);
+    const isAvailable = await this.checkDoctorAvailability(
+      cita_IdDoctor,
+      appointmentDate,
+    );
     if (!isAvailable) {
-      const nextAvailability = await this.getNextDoctorAvailability(cita_IdDoctor);
+      const nextAvailability =
+        await this.getNextDoctorAvailability(cita_IdDoctor);
       if (nextAvailability) {
         throw new BadRequestException(
-          `Doctor is not available on this date. Next availability: ${nextAvailability.nextDate.toLocaleDateString()} from ${nextAvailability.startTime} to ${nextAvailability.endTime}`
+          `Doctor is not available on this date. Next availability: ${nextAvailability.nextDate.toLocaleDateString()} from ${nextAvailability.startTime} to ${nextAvailability.endTime}`,
         );
       } else {
-        throw new BadRequestException("Doctor is not available in the next 30 days");
+        throw new BadRequestException(
+          'Doctor is not available in the next 30 days',
+        );
       }
     }
 
     // Crear y guardar la cita
-    const appointment: Appointment = {
+    const appointment: Partial<Appointment> = {
       ...createAppointmentDto,
-      cita_IdDoctor: +cita_IdDoctor // asegúrate que sea un número
+      cita_IdDoctor: +cita_IdDoctor,
+      NumLista: 0,
+      IdConsultorio: 1,
+      IdEntidadRef: 0,
+      cita_Celular: '',
+      NumPrecita: 0,
+      cita_NumeroPoliza: '',
+      cita_Fecha: new Date(createAppointmentDto.cita_Fecha),
+      cita_NumeroAfiliado: '',
     };
     return this.appointmentsRepository.save(appointment);
   }
 
-
   async findAll(): Promise<Appointment[]> {
-    return this.appointmentsRepository.find({
-      relations: ["doctor", "patient"],
-    });
+    return this.appointmentsRepository.find({});
   }
   async findOne(id): Promise<Appointment> {
-    const appointment = await this.appointmentsRepository.findOne({
-      where: { cita_IdDoctor: id },
-      relations: ["doctor", "patient"],
-    });
+    const appointment = await this.appointmentsRepository.findOne({});
 
     if (!appointment) {
       throw new NotFoundException(`Appointment with ID ${id} not found`);
@@ -74,43 +92,38 @@ export class AppointmentsService {
     return appointment;
   }
 
-
   async findByDoctor(doctorId: number): Promise<Appointment[]> {
-    return this.appointmentsRepository.find({
-      where: { cita_IdDoctor: doctorId },
-      relations: ["patient"],
-    });
+    return this.appointmentsRepository.find({});
   }
 
-
   async findByPatient(patientId: number): Promise<Appointment[]> {
-    return this.appointmentsRepository.find({
-      where: { cita_IdDoctor: patientId }, // <- este campo debe ser el correcto para paciente
-      relations: ["doctor"],
-    });
+    return this.appointmentsRepository.find({});
   }
 
   async completeAppointment(id: string): Promise<Appointment> {
     const appointment = await this.findOne(id);
-    appointment.cita_EstatusConf = "COMPLETADA";
+    appointment.cita_EstatusConf = 'COMPLETADA';
     return this.appointmentsRepository.save(appointment);
   }
 
   async cancelAppointment(id: string): Promise<Appointment> {
     const appointment = await this.findOne(id);
-    appointment.cita_EstatusConf = "CANCELADA";
+    appointment.cita_EstatusConf = 'CANCELADA';
     return this.appointmentsRepository.save(appointment);
   }
 
   //Method to check doctor availability
-  async checkDoctorAvailability(doctorId: string, date: Date): Promise<boolean> {
+  async checkDoctorAvailability(
+    doctorId: string,
+    date: Date,
+  ): Promise<boolean> {
     const doctor = await this.doctorsService.findOne(doctorId);
 
     if (!doctor) {
       throw new NotFoundException(`Doctor with ID ${doctorId} not found`);
     }
 
-    const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const dayOfWeek = date.getDay();
     const hour = date.getHours();
     const minutes = date.getMinutes();
     const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
@@ -178,33 +191,47 @@ export class AppointmentsService {
     //Check if there are already scheduled appointments for this time
     const existingAppointments = await this.appointmentsRepository.count({
       where: {
-        cita_IdDoctor: doctorId,
-        cita_RegPorEstatusConf: 'PROGRAMADA'
-      }
+        cita_IdDoctor: 0,
+        cita_RegPorEstatusConf: 'PROGRAMADA',
+      },
     });
 
     //Limit based on maximum appointments per day
     let maxAppointments = 1;
     switch (dayOfWeek) {
-      case 0: maxAppointments = doctor.doct_CantCitaDom || 1; break;
-      case 1: maxAppointments = doctor.doct_CantCitaLun || 1; break;
-      case 2: maxAppointments = doctor.doct_CantCitaMar || 1; break;
-      case 3: maxAppointments = doctor.doct_CantCitaMie || 1; break;
-      case 4: maxAppointments = doctor.doct_CantCitaJue || 1; break;
-      case 5: maxAppointments = doctor.doct_CantCitaVie || 1; break;
-      case 6: maxAppointments = doctor.doct_CantCitaSab || 1; break;
+      case 0:
+        maxAppointments = doctor.doct_CantCitaDom || 1;
+        break;
+      case 1:
+        maxAppointments = doctor.doct_CantCitaLun || 1;
+        break;
+      case 2:
+        maxAppointments = doctor.doct_CantCitaMar || 1;
+        break;
+      case 3:
+        maxAppointments = doctor.doct_CantCitaMie || 1;
+        break;
+      case 4:
+        maxAppointments = doctor.doct_CantCitaJue || 1;
+        break;
+      case 5:
+        maxAppointments = doctor.doct_CantCitaVie || 1;
+        break;
+      case 6:
+        maxAppointments = doctor.doct_CantCitaSab || 1;
+        break;
     }
-
     return existingAppointments < maxAppointments;
   }
 
   // Method to get next doctor availability
-  async getNextDoctorAvailability(doctorId: string): Promise<{ nextDate: Date, startTime: string, endTime: string } | null> {
+  async getNextDoctorAvailability(
+    doctorId: string,
+  ): Promise<{ nextDate: Date; startTime: string; endTime: string } | null> {
     const doctor = await this.doctorsService.findOne(doctorId);
     if (!doctor) {
       throw new NotFoundException(`Doctor with ID ${doctorId} not found`);
     }
-
     const today = new Date();
     const maxDays = 30; // Search availability for next 30 days
 
@@ -256,26 +283,26 @@ export class AppointmentsService {
           endTime = doctor.doct_HorFinConSab;
           break;
       }
-
       if (isDayAvailable && startTime && endTime) {
         // Convert start time to hours and minutes
         const [startHour, startMinute] = startTime.split(':').map(Number);
         checkDate.setHours(startHour, startMinute, 0, 0);
 
         // Check if appointments are available on this day
-        const isAvailable = await this.checkDoctorAvailability(doctorId, checkDate);
+        const isAvailable = await this.checkDoctorAvailability(
+          doctorId,
+          checkDate,
+        );
 
         if (isAvailable) {
           return {
             nextDate: checkDate,
             startTime,
-            endTime
+            endTime,
           };
         }
       }
     }
-
-    // No availability found in the next days
     return null;
   }
 }
