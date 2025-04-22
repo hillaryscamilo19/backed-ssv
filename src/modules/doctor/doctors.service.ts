@@ -17,8 +17,19 @@ export class DoctorsService {
     private appointmentsRepository: Repository<Appointment>,
   ) {}
 
-  async findAll(): Promise<Doctor[]> {
-    return this.doctorsRepository.find();
+  async findAll(
+    page: number = 1,
+    pageSize: number = 50,
+  ): Promise<{ data: Doctor[]; total: number }> {
+    const [result, total] = await this.doctorsRepository.findAndCount({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    return {
+      data: result,
+      total,
+    };
   }
 
   async findOne(doct_IdDoctor: string): Promise<Doctor> {

@@ -44,7 +44,6 @@ export class AppointmentsService {
     }
 
     const appointmentDate = new Date(cita_Fecha);
-
     // Verificar disponibilidad del doctor
     const isAvailable = await this.checkDoctorAvailability(
       cita_IdDoctor,

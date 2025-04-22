@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { PatientDto } from './dto/patient.dto';
 import { Patient } from './entities/patients.entity';
 
@@ -12,21 +11,23 @@ export class PatientsService {
     private patientsRepository: Repository<Patient>,
   ) {}
 
-  async findAll(page = 1, limit = 50): Promise<{ data: Patient[]; total: number; page: number; limit: number }> {
+  async findAll(
+    page = 1,
+    limit = 50,
+  ): Promise<{ data: Patient[]; total: number; page: number; limit: number }> {
     const [data, total] = await this.patientsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
-      order: { expe_NumeroExpediente: 'ASC' }
+      order: { expe_NumeroExpediente: 'ASC' },
     });
-  
+
     return {
       data,
       total,
       page,
-      limit
+      limit,
     };
   }
-  
 
   async findOne(id: number): Promise<Patient> {
     const patient = await this.patientsRepository.findOneBy({
@@ -69,7 +70,9 @@ export class PatientsService {
   async findByName(expe_Nombres: string, Apellido: string): Promise<Patient[]> {
     return this.patientsRepository
       .createQueryBuilder('patient')
-      .where('patient.expe_Nombres LIKE :Nombre', { expe_Nombres: `%${expe_Nombres}%` })
+      .where('patient.expe_Nombres LIKE :Nombre', {
+        expe_Nombres: `%${expe_Nombres}%`,
+      })
       .andWhere('patient.expe_Apellidos LIKE :Apellido', {
         Apellido: `%${Apellido}%`,
       })
