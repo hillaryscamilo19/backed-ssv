@@ -36,7 +36,10 @@ export class PatientsService {
     if (!patient) {
       throw new NotFoundException(`Patient with record number ${id} not found`);
     }
-    return patient;
+    return {
+      ...patient,
+      nombreCompleto: `${patient.expe_Nombres} ${patient.expe_Apellidos}`,
+    };
   }
 
   async create(patientDto: PatientDto): Promise<Patient> {

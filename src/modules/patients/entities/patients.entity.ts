@@ -174,6 +174,11 @@ export class Patient {
   @Column({ nullable: true })
   expe_Apodo: string;
 
-  @OneToMany(() => Appointment, (appointment) => appointment.cita_IdDoctor)
+  @OneToMany(() => Appointment, (appointment) => appointment.lisp_IdDoctor)
   appointments: Appointment;
+
+
+  get nombreCompleto(): string {
+    return `${this.expe_Nombres} ${this.expe_Apellidos}`;
+  }
 }

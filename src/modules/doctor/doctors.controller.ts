@@ -5,12 +5,10 @@ import  { Doctor } from "./entities/doctor.entity"
 @Controller("doctors")
 export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
-  @Get('paginated')
-  getPaginatedDoctors(
-    @Query('page') page: number = 1,
-    @Query('pageSize') pageSize: number = 50,
-  ) {
-    return this.doctorsService.findAll(page, pageSize);
+
+  @Get("")
+  findAll(): Promise<Doctor[]> {
+    return this.doctorsService.findAll()
   }
 
   @Get(':doct_IdDoctor')

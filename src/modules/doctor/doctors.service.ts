@@ -17,21 +17,10 @@ export class DoctorsService {
     private appointmentsRepository: Repository<Appointment>,
   ) {}
 
-  async findAll(
-    page: number = 1,
-    pageSize: number = 50,
-  ): Promise<{ data: Doctor[]; total: number }> {
-    const [result, total] = await this.doctorsRepository.findAndCount({
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    });
 
-    return {
-      data: result,
-      total,
-    };
+  async findAll(): Promise<Doctor[]> {
+    return this.doctorsRepository.find();
   }
-
   async findOne(doct_IdDoctor: string): Promise<Doctor> {
     // Usar los nombres de propiedad de la entidad, no los nombres de columna de la BD
     const doctor = await this.doctorsRepository.findOneBy({
@@ -155,8 +144,8 @@ export class DoctorsService {
 
     const appointments = await this.appointmentsRepository.find({
       where: {
-        cita_IdDoctor: parseInt(doctorId),
-        cita_EstatusConf: 'PROGRAMADA',
+        lisp_IdDoctor: parseInt(doctorId),
+        lisp_Estatus: 'PROGRAMADA',
       },
     });
 

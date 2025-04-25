@@ -9,9 +9,9 @@ export class Doctor {
   @Column()
   doct_Nombre: string;
 
-  @OneToMany(() => Appointment, (appointment) => appointment.doctor)
+  @OneToMany(() => Appointment, (appointment) => appointment.lisp_IdDoctor)
   citas: Appointment[];
-
+  
   // Días de consulta
   @Column({ name: 'doct_ConsultaDom', default: false })
   doct_ConsultaDom: boolean;
@@ -133,7 +133,7 @@ export class Doctor {
   @Column({ name: 'doct_CantCitaSab', nullable: true })
   doct_CantCitaSab: number; 
 
-  @OneToMany(() => Appointment, appointment => appointment.doctor)
+  @OneToMany(() => Appointment, appointment => appointment.lisp_IdDoctor)
   appointments: Appointment[];
     doctor: any;
 }
