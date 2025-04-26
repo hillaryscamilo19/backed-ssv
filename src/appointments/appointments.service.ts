@@ -13,15 +13,16 @@ export class AppointmentsService {
   ) {}
 
   async create(dto: CreateAppointmentDto): Promise<Appointment> {
-    const nuevaAsignacion = this.appointmentRepo.create({
-      lisp_IdDoctor: dto.lisp_IdDoctor,
-      lisp_Fecha: dto.lisp_Fecha,
-      lisp_NumeroExpediente: dto.lisp_NumeroExpediente,
-      lisp_Comentario: dto.lisp_Comentario || '',
-      lisp_RegPor: dto.lisp_RegPor || 'UI-App',
-      lisp_Estatus: 'P',
-    });
-
+    const nuevaAsignacion = new Appointment();
+  
+    nuevaAsignacion.lisp_IdDoctor = dto.lisp_IdDoctor;
+    nuevaAsignacion.lisp_Fecha = dto.lisp_Fecha;
+    nuevaAsignacion.lisp_NumeroExpediente = dto.lisp_NumeroExpediente;
+    nuevaAsignacion.lisp_Comentario = dto.lisp_Comentario || '';
+    nuevaAsignacion.lisp_RegPor = dto.lisp_RegPor || 'UI-App';
+    nuevaAsignacion.lisp_Estatus = 'P';
+  
     return this.appointmentRepo.save(nuevaAsignacion);
   }
+  
 }

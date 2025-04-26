@@ -1,16 +1,18 @@
-import { Entity, Column} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 's_ListaPaciente', schema: 'dbo' })
 export class Appointment {
+  @PrimaryGeneratedColumn({ name: 'lisp_IdDoctor' })
+  lisp_Id: number;
+
+  @Column({ name: 'lisp_IdDoctor' })
+  lisp_IdDoctor: number;
 
   @Column({ name: 'lisp_Fecha', type: 'date' })
-  lisp_IdDoctor: number;
-  
-  @Column({ name: 'lisp_Fecha', type: 'date' })
-  lisp_Fecha: string;
+  lisp_Fecha: Date;
 
   @Column({ name: 'lisp_NumeroExpediente', nullable: true })
-  lisp_NumeroExpediente: string;
+  lisp_NumeroExpediente: number;
 
   @Column({ name: 'lisp_Comentario', nullable: true })
   lisp_Comentario: string;
