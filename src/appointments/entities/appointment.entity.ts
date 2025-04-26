@@ -1,25 +1,23 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Column} from 'typeorm';
 
-@Entity('dbo.s_ListaPaciente', { schema: 'dbo', database: 'Expediente-Test' })
+@Entity({ name: 's_ListaPaciente', schema: 'dbo' })
 export class Appointment {
-  @PrimaryGeneratedColumn()
-  id: number; // Puedes omitir esto si no hay clave primaria
 
-  @Column()
+  @Column({ name: 'lisp_Fecha', type: 'date' })
   lisp_IdDoctor: number;
+  
+  @Column({ name: 'lisp_Fecha', type: 'date' })
+  lisp_Fecha: string;
 
-  @Column()
-  lisp_Fecha: Date;
+  @Column({ name: 'lisp_NumeroExpediente', nullable: true })
+  lisp_NumeroExpediente: string;
 
-  @Column()
-  lisp_NumeroExpediente: number;
-
-  @Column({ nullable: true })
+  @Column({ name: 'lisp_Comentario', nullable: true })
   lisp_Comentario: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'lisp_RegPor' })
   lisp_RegPor: string;
 
-  @Column({ default: 'P' })
+  @Column({ name: 'lisp_Estatus' })
   lisp_Estatus: string;
 }

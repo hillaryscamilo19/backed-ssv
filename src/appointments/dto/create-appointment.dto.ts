@@ -1,10 +1,8 @@
 import { PrimaryGeneratedColumn, Column } from 'typeorm';
 export class CreateAppointmentDto {
+  
   @PrimaryGeneratedColumn()
-  id: number; // Puedes omitir esto si no hay clave primaria
-
-  @Column()
-  lisp_IdDoctor: number;
+  lisp_IdDoctor: number ;
 
   @Column()
   lisp_Fecha: Date;

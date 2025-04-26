@@ -9,7 +9,7 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 export class AppointmentsService {
   constructor(
     @InjectRepository(Appointment)
-    private appointmentRepo: Repository<Appointment>
+    private appointmentRepo: Repository<Appointment>,
   ) {}
 
   async create(dto: CreateAppointmentDto): Promise<Appointment> {
@@ -19,7 +19,7 @@ export class AppointmentsService {
       lisp_NumeroExpediente: dto.lisp_NumeroExpediente,
       lisp_Comentario: dto.lisp_Comentario || '',
       lisp_RegPor: dto.lisp_RegPor || 'UI-App',
-      lisp_Estatus: 'P'
+      lisp_Estatus: 'P',
     });
 
     return this.appointmentRepo.save(nuevaAsignacion);

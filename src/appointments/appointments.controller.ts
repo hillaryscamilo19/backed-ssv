@@ -14,7 +14,9 @@ export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
 
   @Post()
-  async create(@Body() createAppointmentDto: CreateAppointmentDto): Promise<Appointment> {
+  async create(
+    @Body() createAppointmentDto: CreateAppointmentDto,
+  ): Promise<Appointment> {
     try {
       return await this.appointmentsService.create(createAppointmentDto);
     } catch (error) {

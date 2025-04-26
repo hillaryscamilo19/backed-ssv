@@ -1,6 +1,5 @@
 import { IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Doctor } from 'src/modules/doctor/entities/doctor.entity';
 import { Patient } from 'src/modules/doctor/entities/paciente.entity';
 
 export class CreateAppointmentDto {
