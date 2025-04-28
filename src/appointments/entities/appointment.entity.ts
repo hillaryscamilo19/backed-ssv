@@ -2,24 +2,24 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 's_ListaPaciente', schema: 'dbo' })
 export class Appointment {
-  @PrimaryGeneratedColumn({ name: 'lisp_IdDoctor' })
-  lisp_Id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column({ name: 'lisp_IdDoctor' })
+  @Column()
+  expe_NumeroExpediente: number;
+
+  @Column()
   lisp_IdDoctor: number;
 
-  @Column({ name: 'lisp_Fecha', type: 'date' })
+  @Column({ type: 'date' })
   lisp_Fecha: Date;
 
-  @Column({ name: 'lisp_NumeroExpediente', nullable: true })
-  lisp_NumeroExpediente: number;
+  @Column()
+  lisp_HoraLlegada: string;
 
-  @Column({ name: 'lisp_Comentario', nullable: true })
-  lisp_Comentario: string;
+  @Column({ nullable: true })
+  lisp_HoraFinConsulta?: string;
 
-  @Column({ name: 'lisp_RegPor' })
-  lisp_RegPor: string;
-
-  @Column({ name: 'lisp_Estatus' })
+  @Column()
   lisp_Estatus: string;
 }

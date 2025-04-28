@@ -1,30 +1,19 @@
-import { IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
-import { Patient } from 'src/modules/doctor/entities/paciente.entity';
+import { IsNumber, IsString, IsDateString } from 'class-validator';
 
 export class CreateAppointmentDto {
-    @IsNumber()
-    @Type(() => Number)
-    lisp_IdDoctor: string;
+  @IsString()
+  lisp_NumeroExpediente: string;
+
+  @IsNumber()
+  lisp_IdDoctor: number;
+
+  @IsString()
+  lisp_Nombre: string;
+
   
-    @IsDate()
-    @Type(() => Date)
-    lisp_Fecha: string;
-  
-    @IsDate()
-    lisp_Secuencia: string;
-  
-    @IsNumber()
-    @Type(() => Number)
-    lisp_NumeroExpediente: Patient;
-  
-    @IsString()
-    lisp_Nombre: string;
-  
-    @IsString()
-    lisP_Apellido: string;
-  
-    @IsDate()
-    @Type(() => Date)
-    lisp_HoraLlegada: string;
+  @IsString()
+  lisP_Apellido: string;
+
+  @IsDateString()
+  lisp_Fecha: string; // Puede ser string porque Postman manda texto tipo fecha ("2025-04-28")
 }

@@ -1,26 +1,27 @@
 import {
-  Controller,
-  Post,
   Body,
-  HttpException,
-  HttpStatus,
+  Controller,
+  Get,
+  Post,
+  Query,
 } from '@nestjs/common';
+import { PacienteConsultaDto } from './dto/create-appointment.dto';
 import { AppointmentsService } from './appointments.service';
-import { Appointment } from './entities/appointment.entity';
-import { CreateAppointmentDto } from './dto/create-appointment.dto';
+import { CreateAppointmentDto } from './entities/create-appointment.entity';
 
 @Controller('appointments')
 export class AppointmentsController {
-  constructor(private readonly appointmentsService: AppointmentsService) {}
+  constructor(private readonly AppointmentsService: AppointmentsService) {}
 
-  @Post()
-  async create(
-    @Body() createAppointmentDto: CreateAppointmentDto,
-  ): Promise<Appointment> {
-    try {
-      return await this.appointmentsService.create(createAppointmentDto);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+  @Get('')
+  async getPacientes(@Query('fecha') fecha: string): Promise<PacienteConsultaDto[]> {
+    return this.AppointmentsService.obtenerPacientesPorFecha(fecha);
   }
+
+
+  @Post('create')
+  async asignarDoctorYCita(@Body() data: CreateAppointmentDto) {
+    return await this.AppointmentsService.asignarDoctorYCita(data);
+  }
+
 }
