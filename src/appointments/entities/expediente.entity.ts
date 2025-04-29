@@ -11,10 +11,10 @@ export class Appointment {
   @Column({ name: 'lisp_Fecha', type: 'date' })
   lisp_Fecha: string;
 
-  @Column({name: 'lisp_Nombre'})
+  @Column({ name: 'lisp_Nombre' })
   lisp_Nombre: string;
 
-  @Column({ name: 'lisP_Apellido'})
+  @Column({ name: 'lisP_Apellido' })
   lisP_Apellido: string;
 
   @Column({ name: 'lisp_NumeroExpediente', nullable: true })
