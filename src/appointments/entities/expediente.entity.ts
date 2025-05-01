@@ -8,7 +8,8 @@ export class Appointment {
   @Column({ name: 'lisp_IdDoctor' })
   lisp_IdDoctor: number;
 
-  @Column({ name: 'lisp_Fecha', type: 'date' })
+  @Column({ name: 'lisp_Fecha', type: 'datetime', nullable: false })
+
   lisp_Fecha: string;
 
   @Column({ name: 'lisp_Nombre' })

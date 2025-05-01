@@ -1,4 +1,5 @@
 import { Type } from 'class-transformer';
+import { IsDate, IsDateString } from 'class-validator';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 's_ListaPaciente', schema: 'dbo' })
@@ -12,9 +13,10 @@ export class Appointment {
   
   @Type(() => Number)
   @Column()
-  lisp_IdDoctor: number;
+  lisp_IdDoctor: number;zz
 
-  @Column({ type: 'date' })
+  @Type(() => Date) // Necesario para transformar correctamente
+  @IsDate({ message: 'lisp_Fecha debe ser una fecha válida' })
   lisp_Fecha: Date;
 
   @Column()

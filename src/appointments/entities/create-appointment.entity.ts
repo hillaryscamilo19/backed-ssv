@@ -1,16 +1,12 @@
-
 import { Type } from 'class-transformer';
-import { IsNumber, IsString, IsDateString } from 'class-validator';
+import { IsString, IsDateString, IsNumber } from 'class-validator';
 
 export class CreateAppointmentDto {
   @IsNumber()
-  lisp_NumeroExpediente: number;
+  lisp_IdDoctor: number;
 
-  @IsNumber()
-  lisp_Secuencia: number;
-
-  @IsString()
-  lisp_IdDoctor: string;
+  @IsDateString()
+  lisp_Fecha: string; // <-- CAMBIAR a string y usar IsDateString
 
   @IsString()
   lisp_Nombre: string;
@@ -19,8 +15,5 @@ export class CreateAppointmentDto {
   lisP_Apellido: string;
 
   @IsNumber()
-  NumLista: number;
-
-  @IsDateString()
-  lisp_Fecha: string;
+  lisp_NumeroExpediente: number;
 }
